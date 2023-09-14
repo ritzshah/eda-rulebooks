@@ -1,0 +1,19 @@
+---
+- name: Listen for events on kafka
+  hosts: all
+
+  sources:
+    - ansible.eda.kafka:
+        host: kafka-kafka-bootstrap.globex-mw.svc.cluster.local
+        port: 9092
+        topic: reviews.sentiment
+        group_id: 0
+	security_protocol: PLAINTEXT
+        sasl_mechanism: SCRAM-SHA-512
+	sasl_plain_username: globex
+	sasl_plain_password: globex
+  rules:
+    - name: kafka
+      condition: event.body.score == -1
+      action: 
+        debug:

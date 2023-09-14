@@ -1,0 +1,16 @@
+---
+- name: Listen for events on kafka
+  hosts: all
+
+  sources:
+    - ansible.eda.kafka:
+        host: kafka-cluster-kafka-bootstrap.aap.svc.cluster.local
+        port: 9092
+        topic: review.topic
+        group_id: 0
+
+  rules:
+    - name: kafka
+      condition: event.body is defined
+      action: 
+        debug:
